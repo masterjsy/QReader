@@ -234,18 +234,6 @@ def appendValueToList(row, val):
     row.append(val)
 
 
-def askOpen():
-    fTypes = [(".xlsm", "*.xlsx", ".xls"),(".csv ", "*.csv")]
-    ttl = "Title"
-    dir1 = "c:\\"
-    filePath = ""
-    currentFilePath = askopenfilename(filetypes = fTypes, initialdir=dir1, title=ttl)
-    if(len(currentFilePath) > 0):
-        filePath = currentFilePath
-    
-    return filePath
-
-
 # Open Excel and Return list
 def openExcelFile(filePath):  
     exportList = []
