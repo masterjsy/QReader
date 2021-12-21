@@ -1,17 +1,15 @@
-from tkinter import filedialog
 from openpyxl.workbook.workbook import Workbook
 import pandas as pd
 import yfinance as yf
 import datetime as dt
-from tkinter import *
-from tkinter.filedialog import askopenfilename
 import os
 import requests
 from bs4 import BeautifulSoup
 import logging
 import concurrent.futures
 import time
-
+import tkinter as tk
+import tkinter.filedialog as fd
 
 # Function start ################################################################
 
@@ -289,13 +287,21 @@ def processExcelFile(file_name):
                 rows.append(row)
 
     saveListToWorkbook(rows, file_name)
+
+
+def file_open():
+    fTypes = [(".xlsm", "*.xlsx", ".xls"),(".csv ", "*.csv")]
+    dir1 = "c:\\"
+    files = fd.askopenfilenames(filetypes = fTypes, initialdir=dir1)
+    return list(files)    
     
     
 # Function end ################################################################
 
 
-file_path = 'C:/Users/noname/Downloads/'
-load_files = ['Tickers7.xlsx','Tickers8.xlsx','Tickers9.xlsx','Tickers10.xlsx','Tickers11.xlsx']
+load_files = file_open()
+file_path = filePath = os.path.dirname(load_files[0]) + "/"
+load_files.sort()
 
 log_file = file_path + "/qreader_log_" + dt.datetime.now().strftime("%Y%m%d_%H%M%S") + ".txt"
 print("log file:", log_file)
@@ -305,11 +311,12 @@ logging.basicConfig(filename=log_file, encoding='utf-8', level=logging.DEBUG)
 waiting_time = 5400
 
 for index, load_file in enumerate(load_files):
-    processExcelFile(file_path + load_file)
+    processExcelFile(load_file)
     if(index < len(load_files)-1):
         logging.debug("Sleep for {}: ".format(waiting_time) + dt.datetime.now().strftime("%Y%m%d %H:%M:%S"))
         time.sleep(waiting_time)
         logging.debug("Wake up: " + dt.datetime.now().strftime("%Y%m%d %H:%M:%S"))
+
 
 
 
